@@ -51,8 +51,8 @@
 
 <br/>
 
-<!-- 华丽版数据统计卡片 -->
+<!-- 极简版代码提交统计 -->
 <div align="center">
-  <h3>📊 GitHub Stats</h3>
-  <img src="https://github-readme-stats.vercel.app/api?username=Cyh-codes&show_icons=true&theme=radical&hide_border=true&rank_icon=github" alt="GitHub Stats" />
+  <h3>📊 My Contributions</h3>
+  <img src="https://ghchart.rshah.org/rad/Cyh-codes" alt="Cyh's Github Chart" />
 </div>
