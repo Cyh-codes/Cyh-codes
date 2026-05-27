@@ -1,47 +1,46 @@
 <div align="center">
-  <h3>💡 真实的开发日常 (System Log)</h3>
-  <p>作为底层逻辑的“盲目”信徒，我深信：<b>只要终端配得够花哨，就没人发现我在 Google 翻转二叉树。</b><br/>目前正致力于将庞大的上帝类 (God Class) 送进历史垃圾堆，以及用魔法打败 API 限制。</p>
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3500&pause=1500&color=FF5722&center=true&vCenter=true&width=800&lines=%3E+git+commit+-m+%22fixed+the+bugs+generated+by+AI%22;%3E+System.init(Hard_Work_Mode);%3E+Bypassing+Anti-Scraping+Mechanisms...;%3E+Playing+Slay+the+Spire+while+compiling..." alt="Typing SVG" />
 </div>
 
 <br/>
 
-<table align="center" width="850">
-  <tr>
-    <td>
-      <details open>
-        <summary>🌱 <b>[主线任务]：底层死磕与规范化强迫症</b> (点击收起/展开)</summary>
-        <br/>
-        <blockquote>
-          <p>试图用 C 语言手动管理内存（<i>目前主要产出：Segmentation Fault 内存溢出</i>）。<br/>
-          极度推崇 3NF/BCNF 数据库范式，并沉迷于构建高隐蔽性的 Python 数据管道。</p>
-        </blockquote>
-      </details>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <details>
-        <summary>🤖 <b>[外挂系统]：Vibe Coding 高级调参师</b> (点击展开)</summary>
-        <br/>
-        <blockquote>
-          <p>熟练掌握指挥 AI Agent 生成大量底层脚手架代码。<br/>
-          <i>日常流转：</i>花 5 分钟让 AI 写完核心，再花一整天时间去 Debug 它的架构幻觉与幽灵 Bug。</p>
-        </blockquote>
-      </details>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <details>
-        <summary>⚔️ <b>[被动技能]：架构洁癖与 OCP 原则防御</b> (点击展开)</summary>
-        <br/>
-        <blockquote>
-          <p>拒绝一个 <code>switch</code> 塞一万行逻辑的邪道做法！<br/>
-          近期正致力于将 Java Roguelike 引擎底层的逻辑彻底解耦。代码可以跑得慢，但绝对不能不符合设计模式规范。</p>
-        </blockquote>
-      </details>
-    </td>
-  </tr>
-</table>
+<div align="center">
+  <h3>💡 真实的开发日常 (My Reality)</h3>
+  <p>作为一个底层逻辑的“盲目”信徒，我深信：<b>“只要终端环境配得足够花哨，别人就不会发现我还在 Google 翻转二叉树。”</b><br/>目前正致力于将散发着腐烂气息的“上帝类 (God Class)”送进历史垃圾堆，以及用魔法打败 API 限制。</p>
+</div>
+
+<div align="center">
+  <p>🌱 <b>目前正在死磕：</b>试图手动管理内存（并专业地制造内存泄漏），以及强迫症般地推崇 3NF/BCNF 数据库规范化。</p>
+  <p>🤖 <b>Vibe Coding 践行者：</b>熟练掌握指挥 AI 写出面条代码，然后再花一整天时间去 Debug 它的架构幻觉。</p>
+  <p>⚔️ <b>工程底线：</b>拒绝一个 <code>switch</code> 塞一万行逻辑！代码可以跑得慢，但绝对不能不符合设计模式规范。</p>
+</div>
 
 <br/>
+
+<div align="center">
+  <h3>🛠️ 赖以生存的技术栈 (Surviving With)</h3>
+  <p>
+    <a href="https://skillicons.dev">
+      <img src="https://skillicons.dev/icons?i=java,py,mysql,vim,powershell,git,github&theme=light" alt="Tech Stack" />
+    </a>
+  </p>
+</div>
+
+<br/>
+
+<div align="center">
+  <h3>🔥 极其真实的算力消耗 (CPU & Brain Usage)</h3>
+  <br/>
+  <img src="https://img.shields.io/badge/100%25-与_Oracle_云测谎仪斗智斗勇-FF0000?style=for-the-badge&logo=oracle&logoColor=white" alt="100%" /><br/><br/>
+  <img src="https://img.shields.io/badge/80%25-魔改_PowerShell_追求0.1秒启动-FF8C00?style=for-the-badge&logo=powershell&logoColor=white" alt="80%" /><br/><br/>
+  <img src="https://img.shields.io/badge/50%25-用轻薄本开《杀戮尖塔》送人头-4CAF50?style=for-the-badge&logo=steam&logoColor=white" alt="50%" /><br/><br/>
+  <img src="https://img.shields.io/badge/10%25-真正打开_IDE_写出阳间代码-0088CC?style=for-the-badge&logo=intellijidea&logoColor=white" alt="10%" />
+</div>
+
+<br/>
+
+<div align="center">
+  <h3>🏆 努力的证明 (Just to show I'm alive)</h3>
+  <br/>
+  <img src="https://streak-stats.demolab.com/?user=Cyh-codes&bg_color=fffde7&title_color=333333&text_color=555555&icon_color=ffb86c&border_color=ffe0b2&fire=ffa000&ring=ffb300" alt="GitHub Streak" />
+</div>
