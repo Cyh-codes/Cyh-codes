@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SLAY THE BUG · Cyh-codes</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --panel: #171b24;
+      --panel-2: #1e2430;
+      --border: #2f3747;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #ff8c42;
+      --gold: #ffd166;
+      --red: #ff5c5c;
+      --blue: #58a6ff;
+      --green: #4ade80;
+      --purple: #c084fc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "PingFang SC", "Microsoft YaHei", monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+    .shell {
+      width: 100%;
+      max-width: 860px;
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    }
+    /* Top HUD */
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 16px;
+      background: #12151d;
+      border-bottom: 2px solid var(--border);
+      font-size: 13px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
+    .brand a { color: var(--muted); text-decoration: none; font-weight: 400; font-size: 12px; }
+    .brand a:hover { color: var(--text); }
+    .hud-items { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .pill {
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .pill.floor { color: var(--gold); border-color: rgba(255, 209, 102, 0.35); }
+    .pill.relic { color: var(--accent); cursor: default; }
+    .icon-btn {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 9px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .icon-btn:hover { border-color: var(--accent); color: var(--gold); }
+    .icon-btn:disabled { opacity: 0.38; cursor: not-allowed; }
+    .icon-btn.undo-ready { border-color: var(--green); color: var(--green); }
+
+    /* Arena Canvas */
+    .arena-wrap {
+      position: relative;
+      background: radial-gradient(circle at 50% 30%, #1d2230 0%, #11141c 80%);
+      border-bottom: 2px solid var(--border);
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      image-rendering: pixelated;
+    }
+
+    /* Battle Log Strip */
+    .logbar {
+      padding: 8px 16px;
+      background: #12151d;
+      border-bottom: 1px solid var(--border);
+      font-size: 12.5px;
+      color: #c9d1d9;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .log-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pile-info { color: var(--muted); font-size: 11.5px; flex-shrink: 0; }
+
+    /* Hand & Controls */
+    .controls {
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .energy-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .energy-orb {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ffd166, #ff8c42 70%);
+      color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 14px;
+      box-shadow: 0 0 12px rgba(255, 140, 66, 0.45);
+    }
+    .end-btn {
+      background: var(--accent);
+      color: #111;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 18px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.08s ease, filter 0.12s ease;
+    }
+    .end-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .end-btn:active { transform: translateY(1px); }
+    .end-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .hand {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(136px, 1fr));
+      gap: 10px;
+      min-height: 134px;
+    }
+    .card {
+      position: relative;
+      background: var(--panel-2);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 10px 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+    .card:hover:not(.disabled) {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+    .card.disabled { opacity: 0.42; cursor: not-allowed; }
+    .card.attack { border-top: 3px solid var(--red); }
+    .card.skill { border-top: 3px solid var(--blue); }
+    .card.power { border-top: 3px solid var(--purple); }
+    .card.curse { border-top: 3px solid #6b7280; background: #1a1820; }
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .card-cost {
+      min-width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      background: #0f1117;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card.curse .card-cost { border-color: #6b7280; color: #9ca3af; }
+    .card-type { font-size: 10.5px; color: var(--muted); }
+    .card-name { font-size: 13px; font-weight: 700; color: #fff; }
+    .card-desc { font-size: 11.5px; line-height: 1.45; color: #b7c0cc; }
+    .card-key {
+      position: absolute;
+      right: 8px;
+      bottom: 6px;
+      font-size: 10px;
+      color: #556070;
+    }
+
+    /* Overlay Modal (Reward / End) */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 12, 18, 0.88);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      gap: 14px;
+      z-index: 10;
+    }
+    .overlay.show { display: flex; }
+    .overlay h2 { font-size: 20px; color: var(--gold); }
+    .overlay p { font-size: 13px; color: #c9d1d9; max-width: 520px; line-height: 1.6; }
+    .reward-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      width: 100%;
+      max-width: 600px;
+    }
+    @media (max-width: 600px) {
+      .reward-grid { grid-template-columns: 1fr; }
+      .hand { grid-template-columns: repeat(2, 1fr); }
+    }
+    .footer-hint {
+      margin-top: 10px;
+      font-size: 11.5px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <span>SLAY THE BUG</span>
+        <a href="https://github.com/Cyh-codes" target="_blank" rel="noopener">← Cyh-codes</a>
+      </div>
+      <div class="hud-items">
+        <span class="pill floor" id="floorPill">FLOOR 1 / 5</span>
+        <span class="pill relic" title="每战首回合能量 +1">遗物: 冰美式</span>
+        <button class="icon-btn undo-ready" id="undoBtn" title="每局一次：回滚上回合血量">一键 Undo (1)</button>
+        <button class="icon-btn" id="sfxBtn">音效: 开</button>
+        <button class="icon-btn" id="restartBtn">重开</button>
+      </div>
+    </div>
+
+    <div class="arena-wrap">
+      <canvas id="arena" width="820" height="270"></canvas>
+      <div class="overlay" id="overlay"></div>
+    </div>
+
+    <div class="logbar">
+      <div class="log-text" id="logText">准备就绪：点击卡牌或按 1-5 出牌，Space 结束回合。</div>
+      <div class="pile-info" id="pileInfo">抽牌 0 · 弃牌 0</div>
+    </div>
+
+    <div class="controls">
+      <div class="action-row">
+        <div class="energy-box">
+          <div class="energy-orb" id="energyOrb">4</div>
+          <span id="energyLabel">能量 4 / 3</span>
+        </div>
+        <button class="end-btn" id="endTurnBtn">结束回合 [Space]</button>
+      </div>
+      <div class="hand" id="hand"></div>
+    </div>
+  </div>
+  <div class="footer-hint">快捷键：1~5 出牌 · Space 结束回合 · U 一键 Undo · R 重开</div>
+
+<script>
+(() => {
+  // ===== 8-bit WebAudio Synth =====
+  let audioCtx = null;
+  let sfxOn = true;
+  function tone(freq, dur = 0.09, type = 'square', vol = 0.06, slideTo = null) {
+    if (!sfxOn) return;
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, audioCtx.currentTime + dur);
+      g.gain.setValueAtTime(vol, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(); o.stop(audioCtx.currentTime + dur);
+    } catch (_) {}
+  }
+  const SFX = {
+    hit: () => { tone(260, 0.07, 'square', 0.06, 90); },
+    heavy: () => { tone(180, 0.14, 'sawtooth', 0.08, 55); },
+    block: () => { tone(520, 0.08, 'triangle', 0.07, 740); },
+    heal: () => { tone(440, 0.09, 'sine', 0.06, 660); setTimeout(() => tone(660, 0.11, 'sine', 0.06, 880), 80); },
+    hurt: () => { tone(140, 0.15, 'sawtooth', 0.07, 65); },
+    win: () => { [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => tone(f, 0.12, 'square', 0.05), i * 85)); },
+    undo: () => { tone(700, 0.08, 'triangle', 0.06, 360); setTimeout(() => tone(520, 0.1, 'triangle', 0.06, 880), 80); }
+  };
+
+  // ===== Pixel Sprites =====
+  const PAL = {
+    K: '#1b1f2b', W: '#f3f4f6', O: '#ff8c42', Y: '#ffd166', H: '#ff6b6b',
+    E: '#111827', P: '#4ade80', L: '#86efac', T: '#16a34a', B: '#58a6ff',
+    D: '#1d4ed8', V: '#c084fc', U: '#7e22ce', R: '#ef4444', M: '#94a3b8',
+    C: '#8d5524', S: '#334155', G: '#22c55e'
+  };
+
+  const PLAYER_SPRITE = [
+    '....K......K....',
+    '...KWK....KWK...',
+    '...KWWKKKKWWK...',
+    '...KWWWWWWWWK...',
+    '...KWWEWWWEWK...',
+    '...KWHWWWWWHK...',
+    '....KWWWWWWK..M.',
+    '....KOOOOOOK.MW.',
+    '...KWWWWWWWWKMW.',
+    '...KWWWWWWWWKYK.',
+    '....KKWWWWKK.C..',
+    '.....K....K.....',
+  ];
+
+  const BOSS_SPRITES = [
+    // 1. Switch Slime
+    [
+      '.....KKKKKK.....',
+      '...KKLLLLLLKK...',
+      '..KLLPPPPPPPPK..',
+      '.KLPPPPPPPPPPPK.',
+      'KLPPKEPPPPKEPPPK',
+      'KPPPKKPPPPKKPPPK',
+      'KPPPPPPPPPPPPPPK',
+      'KPPPPPKKKKPPPPPK',
+      'KTTPPPPPPPPPPTTK',
+      '.KTTTTTTTTTTTTK.',
+      '..KKKKKKKKKKKK..',
+    ],
+    // 2. Segfault Ghost
+    [
+      '....KKKKKKKK....',
+      '..KKVVVVVVVVKK..',
+      '.KVVVVVVVVVVVVK.',
+      'KVVVVVVVVVVVVVVK',
+      'KVVVKKVVVVKKVVVK',
+      'KVVVHKVVVVHKVVVK',
+      'KVVVVVVVVVVVVVVK',
+      'KVVVVVKKKKVVVVVK',
+      'KVVVVVVVVVVVVVVK',
+      'KVV.KVV..VVK.VVK',
+      '.K...K....K...K.',
+    ],
+    // 3. God Class Golem
+    [
+      '...KKKKKKKKKK...',
+      '..KSSSSSSSSSSK..',
+      '.KSSMMMMMMMMSSK.',
+      '.KSMYYMMMMYYMSK.',
+      'KKSMMMMMMMMMMSKK',
+      'KSSMMKKKKKKMMSSK',
+      'KSSMMMMMMMMMMSSK',
+      'KSSSSSSSSSSSSSSK',
+      '.KKSSSKKKKSSSKK.',
+      '..KSSK....KSSK..',
+      '..KKKK....KKKK..',
+    ],
+    // 4. AI Hallucination Eye
+    [
+      '.....KKKKKK.....',
+      '...KKBBBBBBKK...',
+      '..KBBWWWWWWBBK..',
+      '.KBWWVVVVVVWWBK.',
+      'KBWWVVKKKKVVWWBK',
+      'KBWWVVKRRKVVWWBK',
+      'KBWWVVKKKKVVWWBK',
+      '.KBWWVVVVVVWWBK.',
+      '..KBBWWWWWWBBK..',
+      '...KKBBBBBBKK...',
+      '.....K.KK.K.....',
+    ],
+    // 5. Oracle Lie Detector
+    [
+      '..KKKKKKKKKKKK..',
+      '.KRRRRRRRRRRRRK.',
+      'KRYYYYYYYYYYYYRK',
+      'KRYKKKKKKKKKKYRK',
+      'KRYKRRKKKKRRKYRK',
+      'KRYKRRKYYKRRKYRK',
+      'KRYKKKKKKKKKKYRK',
+      'KRYYYYYYYYYYYYRK',
+      '.KRRRRRRRRRRRRK.',
+      '..KKK..KK..KKK..',
+      '.KRRK......KRRK.',
+    ],
+  ];
+
+  // ===== Card Library =====
+  const CARDS = {
+    strike:   { id:'strike',   name:'打击',       cost:1, type:'attack', desc:'造成 8 点伤害。', play: (g) => g.dealBoss(8, '打击') },
+    defend:   { id:'defend',   name:'3NF 格挡',   cost:1, type:'skill',  desc:'获得 7 点护甲。', play: (g) => g.addBlock(7) },
+    vibe:     { id:'vibe',     name:'Vibe Coding',cost:0, type:'skill',  desc:'抽 2 张牌；将 1 张「幻觉」塞入弃牌堆。', play: (g) => { g.draw(2); g.discard.push(cloneCard('curse')); g.log('Vibe Coding 抽了 2 牌，顺便埋了 1 个幻觉 Bug。'); SFX.block(); } },
+    refactor: { id:'refactor', name:'重构重击',   cost:2, type:'attack', desc:'造成 15 伤；若 Boss 准备攻击再 +5 伤。', play: (g) => g.dealBoss(g.boss.intent.type === 'attack' ? 20 : 15, '重构重击', true) },
+    curse:    { id:'curse',    name:'架构幻觉',   cost:1, type:'curse',  desc:'消耗。除了占手牌和浪费 1 费毫无用处。', exhaust:true, play: (g) => { g.log('你花 1 点能量把「架构幻觉」删掉了。'); SFX.block(); } },
+    // Reward Pool
+    fastboot: { id:'fastboot', name:'0.1秒终端启动', cost:0, type:'skill', desc:'能量 +1，抽 1 张牌。', play: (g) => { g.energy += 1; g.draw(1); g.log('终端 0.1 秒启动！能量 +1 并抽 1 牌。'); SFX.heal(); } },
+    gate:     { id:'gate',     name:'Pydantic 门禁', cost:1, type:'attack',desc:'造成 11 伤，并清空手牌里所有「架构幻觉」。', play: (g) => { const n = g.purgeCurses(); g.dealBoss(11 + n * 4, '事实门禁'); if (n) g.log(`事实门禁拦截了 ${n} 张幻觉，额外增伤！`); } },
+    sandbox:  { id:'sandbox',  name:'沙箱隔离',   cost:1, type:'skill',  desc:'获得 11 点护甲，令 Boss 下次攻击 -3。', play: (g) => { g.addBlock(11); g.boss.weak = (g.boss.weak || 0) + 1; g.log('沙箱生效：护甲 +11，Boss 攻击被削弱！'); } },
+    sha256:   { id:'sha256',   name:'分块 SHA-256',cost:1, type:'attack',desc:'连续造成 6 点伤害 × 2 次。', play: (g) => { g.dealBoss(6, '分块查重'); setTimeout(() => { if (g.boss.hp > 0) g.dealBoss(6, '分块查重'); }, 150); } },
+    coffee:   { id:'coffee',   name:'冰美式续命', cost:1, type:'power',  desc:'恢复 12 点 HP，消耗。', exhaust:true, play: (g) => { g.healPlayer(12); } },
+    purge:    { id:'purge',    name:'消灭上帝类', cost:2, type:'attack', desc:'造成 24 点巨额重构伤害。', play: (g) => g.dealBoss(24, '消灭上帝类', true) },
+  };
+  const REWARD_POOL = ['fastboot', 'gate', 'sandbox', 'sha256', 'coffee', 'purge'];
+  function cloneCard(id) { return { ...CARDS[id], uid: Math.random().toString(36).slice(2) }; }
+
+  const BOSS_LIST = [
+    { name: '万行 Switch 史莱姆', hp: 38, sprite: 0, moves: [{type:'attack', val:8}, {type:'attack', val:11}, {type:'block', val:8, atk:6}] },
+    { name: '内存泄漏幽灵',       hp: 52, sprite: 1, moves: [{type:'attack', val:10}, {type:'curse', val:8}, {type:'attack', val:14}] },
+    { name: '上帝类巨像',         hp: 68, sprite: 2, moves: [{type:'block', val:10, atk:8}, {type:'attack', val:15}, {type:'attack', val:12}] },
+    { name: '架构幻觉魔像',       hp: 82, sprite: 3, moves: [{type:'curse', val:10}, {type:'attack', val:16}, {type:'block', val:12, atk:10}] },
+    { name: 'Oracle 云测谎仪',    hp: 105,sprite: 4, moves: [{type:'attack', val:14}, {type:'curse', val:12}, {type:'attack', val:20}, {type:'block', val:14, atk:12}] },
+  ];
+
+  // ===== Game State =====
+  const G = {
+    floor: 1,
+    player: { hp: 60, maxHp: 60, block: 0, lunge: 0, flash: 0 },
+    boss: null,
+    deck: [], drawPile: [], hand: [], discard: [],
+    energy: 3, maxEnergy: 3,
+    undoCharges: 1, snapshot: null,
+    locked: false, totalDmg: 0, turns: 0,
+    floats: [], shake: 0, tick: 0,
+  };
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function addFloat(x, y, text, color) {
+    G.floats.push({ x, y, text, color, life: 42 });
+  }
+
+  function log(msg) {
+    document.getElementById('logText').textContent = msg;
+  }
+
+  function startRun() {
+    G.floor = 1;
+    G.player = { hp: 60, maxHp: 60, block: 0, lunge: 0, flash: 0 };
+    G.deck = ['strike','strike','strike','strike','defend','defend','defend','vibe','refactor'].map(cloneCard);
+    G.undoCharges = 1;
+    G.totalDmg = 0;
+    G.turns = 0;
+    hideOverlay();
+    startFloor(1);
+  }
+
+  function startFloor(floor) {
+    G.floor = floor;
+    const tpl = BOSS_LIST[floor - 1];
+    G.boss = {
+      ...tpl,
+      maxHp: tpl.hp,
+      block: 0,
+      weak: 0,
+      moveIdx: 0,
+      intent: tpl.moves[0],
+      lunge: 0,
+      flash: 0
+    };
+    G.player.block = 0;
+    G.drawPile = shuffle(G.deck.map(c => ({ ...c })));
+    G.hand = [];
+    G.discard = [];
+    G.snapshot = null;
+    G.locked = false;
+    beginPlayerTurn(true);
+    log(`第 ${floor} 层：遭遇「${tpl.name}」！首回合冰美式触发，能量 +1。`);
+  }
+
+  function beginPlayerTurn(firstTurn = false) {
+    G.turns += 1;
+    G.player.block = 0;
+    G.energy = G.maxEnergy + (firstTurn ? 1 : 0);
+    G.hand = [];
+    drawCards(4);
+    saveSnapshot();
+    renderUI();
+  }
+
+  function saveSnapshot() {
+    G.snapshot = {
+      hp: G.player.hp,
+      block: G.player.block,
+      bossHp: G.boss.hp,
+      bossBlock: G.boss.block,
+      energy: G.energy,
+    };
+  }
+
+  function drawCards(n) {
+    for (let i = 0; i < n; i++) {
+      if (G.hand.length >= 5) break;
+      if (G.drawPile.length === 0) {
+        if (G.discard.length === 0) break;
+        G.drawPile = shuffle(G.discard);
+        G.discard = [];
+      }
+      G.hand.push(G.drawPile.pop());
+    }
+  }
+
+  const actions = {
+    draw: (n) => drawCards(n),
+    log,
+    get discard() { return G.discard; },
+    get boss() { return G.boss; },
+    get energy() { return G.energy; },
+    set energy(v) { G.energy = v; },
+    addBlock(val) {
+      G.player.block += val;
+      SFX.block();
+      addFloat(200, 115, `+${val} 甲`, '#58a6ff');
+      log(`获得 ${val} 点护甲。`);
+    },
+    healPlayer(val) {
+      const before = G.player.hp;
+      G.player.hp = Math.min(G.player.maxHp, G.player.hp + val);
+      const gain = G.player.hp - before;
+      SFX.heal();
+      addFloat(200, 110, `+${gain} HP`, '#4ade80');
+      log(`喝下冰美式，恢复 ${gain} 点生命。`);
+    },
+    purgeCurses() {
+      const before = G.hand.length;
+      G.hand = G.hand.filter(c => c.id !== 'curse');
+      return before - G.hand.length;
+    },
+    dealBoss(dmg, srcName, heavy = false) {
+      G.player.lunge = 10;
+      G.boss.flash = 8;
+      G.shake = heavy ? 8 : 4;
+      heavy ? SFX.heavy() : SFX.hit();
+      let remain = dmg;
+      if (G.boss.block > 0) {
+        const blk = Math.min(G.boss.block, remain);
+        G.boss.block -= blk;
+        remain -= blk;
+      }
+      G.boss.hp = Math.max(0, G.boss.hp - remain);
+      G.totalDmg += remain;
+      addFloat(610, 105, `-${remain}`, heavy ? '#ffd166' : '#ff5c5c');
+      log(`打出「${srcName}」，造成 ${remain} 点伤害！`);
+      if (G.boss.hp <= 0) onBossDefeated();
+    }
+  };
+
+  function playCard(idx) {
+    if (G.locked) return;
+    const card = G.hand[idx];
+    if (!card || card.cost > G.energy) return;
+    G.energy -= card.cost;
+    G.hand.splice(idx, 1);
+    card.play(actions);
+    if (!card.exhaust) G.discard.push(card);
+    renderUI();
+  }
+
+  function endTurn() {
+    if (G.locked) return;
+    G.locked = true;
+    // Discard remaining hand
+    while (G.hand.length) G.discard.push(G.hand.pop());
+    renderUI();
+
+    setTimeout(() => {
+      if (G.boss.hp <= 0) return;
+      const mv = G.boss.intent;
+      G.boss.block = 0;
+      const weakPenalty = G.boss.weak > 0 ? 3 : 0;
+      if (G.boss.weak > 0) G.boss.weak -= 1;
+
+      if (mv.type === 'block') {
+        G.boss.block += mv.val;
+        addFloat(610, 120, `+${mv.val} 甲`, '#58a6ff');
+      }
+      const atkVal = Math.max(0, (mv.atk || mv.val) - weakPenalty);
+      if (mv.type === 'curse') {
+        G.discard.push(cloneCard('curse'));
+      }
+      if (atkVal > 0) {
+        G.boss.lunge = -10;
+        const absorbed = Math.min(G.player.block, atkVal);
+        const dmg = atkVal - absorbed;
+        G.player.block -= absorbed;
+        G.player.hp = Math.max(0, G.player.hp - dmg);
+        if (dmg > 0) {
+          G.player.flash = 8;
+          G.shake = 7;
+          SFX.hurt();
+          addFloat(200, 105, `-${dmg}`, '#ff5c5c');
+          log(`${G.boss.name} 攻击造成 ${dmg} 伤${mv.type === 'curse' ? '，并塞入 1 张「架构幻觉」' : ''}！`);
+        } else {
+          SFX.block();
+          addFloat(200, 105, '格挡!', '#58a6ff');
+          log(`完美格挡了 ${G.boss.name} 的 ${atkVal} 点攻击！`);
+        }
+      }
+
+      if (G.player.hp <= 0) {
+        renderUI();
+        showDefeat();
+        return;
+      }
+
+      // Advance boss intent
+      G.boss.moveIdx = (G.boss.moveIdx + 1) % G.boss.moves.length;
+      G.boss.intent = G.boss.moves[G.boss.moveIdx];
+      G.locked = false;
+      beginPlayerTurn(false);
+    }, 380);
+  }
+
+  function triggerUndo() {
+    if (G.locked || G.undoCharges <= 0 || !G.snapshot) return;
+    G.undoCharges -= 1;
+    const before = G.player.hp;
+    G.player.hp = Math.max(G.player.hp, Math.min(G.player.maxHp, G.snapshot.hp + 10));
+    G.player.block += 8;
+    G.energy += 1;
+    SFX.undo();
+    addFloat(200, 95, 'UNDO!', '#4ade80');
+    log(`触发「一键 Undo」事务回滚！恢复至 ${G.player.hp} HP（+${G.player.hp - before}），护甲 +8，能量 +1。`);
+    renderUI();
+  }
+
+  function onBossDefeated() {
+    G.locked = true;
+    SFX.win();
+    setTimeout(() => {
+      if (G.floor >= BOSS_LIST.length) {
+        showVictory();
+      } else {
+        // Heal 12 HP between floors and offer 3 cards
+        G.player.hp = Math.min(G.player.maxHp, G.player.hp + 12);
+        showReward();
+      }
+    }, 450);
+  }
+
+  function showReward() {
+    const picks = shuffle([...REWARD_POOL]).slice(0, 3).map(cloneCard);
+    const ov = document.getElementById('overlay');
+    ov.innerHTML = `
+      <h2>击杀 ${G.boss.name}！</h2>
+      <p>战后休整恢复 12 HP。挑选 1 张新卡加入你的牌组，进入第 ${G.floor + 1} 层：</p>
+      <div class="reward-grid">
+        ${picks.map((c, i) => `
+          <div class="card ${c.type}" data-pick="${i}">
+            <div class="card-top"><span class="card-cost">${c.cost}</span><span class="card-type">${c.type.toUpperCase()}</span></div>
+            <div class="card-name">${c.name}</div>
+            <div class="card-desc">${c.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+      <button class="icon-btn" id="skipReward">跳过选牌，直接上楼</button>
+    `;
+    ov.classList.add('show');
+    ov.querySelectorAll('[data-pick]').forEach(el => {
+      el.onclick = () => {
+        const chosen = picks[Number(el.dataset.pick)];
+        G.deck.push(cloneCard(chosen.id));
+        hideOverlay();
+        startFloor(G.floor + 1);
+      };
+    });
+    document.getElementById('skipReward').onclick = () => {
+      hideOverlay();
+      startFloor(G.floor + 1);
+    };
+  }
+
+  function showVictory() {
+    const ov = document.getElementById('overlay');
+    ov.innerHTML = `
+      <h2>通关尖塔！ALL BUGS SLAIN</h2>
+      <p>你用 ${G.turns} 个回合、累计 ${G.totalDmg} 点伤害击败了全部 5 层 Boss（连 Oracle 云测谎仪都顶不住）。</p>
+      <div style="display:flex;gap:10px;">
+        <button class="end-btn" id="playAgain">再来一局</button>
+        <a class="icon-btn" style="text-decoration:none;display:inline-flex;align-items:center;" href="https://github.com/Cyh-codes">回到主页</a>
+      </div>
+    `;
+    ov.classList.add('show');
+    document.getElementById('playAgain').onclick = startRun;
+  }
+
+  function showDefeat() {
+    const ov = document.getElementById('overlay');
+    ov.innerHTML = `
+      <h2 style="color:#ff5c5c;">SEGMENTATION FAULT (核心已转储)</h2>
+      <p>你倒在了第 ${G.floor} 层「${G.boss.name}」面前（共造成 ${G.totalDmg} 点伤害）。喝杯咖啡再来一局？</p>
+      <button class="end-btn" id="retryBtn">重新爬塔</button>
+    `;
+    ov.classList.add('show');
+    document.getElementById('retryBtn').onclick = startRun;
+  }
+
+  function hideOverlay() {
+    document.getElementById('overlay').classList.remove('show');
+  }
+
+  function renderUI() {
+    document.getElementById('floorPill').textContent = `FLOOR ${G.floor} / ${BOSS_LIST.length}`;
+    document.getElementById('energyOrb').textContent = G.energy;
+    document.getElementById('energyLabel').textContent = `能量 ${G.energy} / ${G.maxEnergy}`;
+    document.getElementById('pileInfo').textContent = `抽牌 ${G.drawPile.length} · 弃牌 ${G.discard.length} · 牌库 ${G.deck.length}`;
+    document.getElementById('endTurnBtn').disabled = G.locked;
+
+    const undoBtn = document.getElementById('undoBtn');
+    undoBtn.textContent = `一键 Undo (${G.undoCharges})`;
+    undoBtn.disabled = G.locked || G.undoCharges <= 0;
+    undoBtn.classList.toggle('undo-ready', G.undoCharges > 0);
+
+    const handEl = document.getElementById('hand');
+    handEl.innerHTML = G.hand.map((c, i) => {
+      const dis = G.locked || c.cost > G.energy ? 'disabled' : '';
+      const typeLabel = c.type === 'attack' ? '攻击' : c.type === 'skill' ? '技能' : c.type === 'power' ? '能力' : '诅咒';
+      return `
+        <div class="card ${c.type} ${dis}" data-idx="${i}">
+          <div class="card-top">
+            <span class="card-cost">${c.cost}</span>
+            <span class="card-type">${typeLabel}</span>
+          </div>
+          <div class="card-name">${c.name}</div>
+          <div class="card-desc">${c.desc}</div>
+          <span class="card-key">[${i + 1}]</span>
+        </div>
+      `;
+    }).join('');
+    handEl.querySelectorAll('.card').forEach(el => {
+      el.onclick = () => playCard(Number(el.dataset.idx));
+    });
+  }
+
+  // ===== Canvas Pixel Renderer =====
+  const canvas = document.getElementById('arena');
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+
+  function drawSprite(grid, x, y, px, flash = false) {
+    for (let r = 0; r < grid.length; r++) {
+      for (let c = 0; c < grid[r].length; c++) {
+        const ch = grid[r][c];
+        if (!PAL[ch]) continue;
+        ctx.fillStyle = flash ? '#ffffff' : PAL[ch];
+        ctx.fillRect(Math.round(x + c * px), Math.round(y + r * px), px, px);
+      }
+    }
+  }
+
+  function drawHpBar(x, y, w, hp, maxHp, block, color) {
+    ctx.fillStyle = '#0d1017';
+    ctx.fillRect(x - 2, y - 2, w + 4, 18);
+    ctx.fillStyle = '#252b38';
+    ctx.fillRect(x, y, w, 14);
+    const ratio = Math.max(0, hp / Math.max(1, maxHp));
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, Math.round(w * ratio), 14);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 11px ui-monospace, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${hp} / ${maxHp}${block > 0 ? `  [甲 ${block}]` : ''}`, x + w / 2, y + 11);
+  }
+
+  function loop() {
+    G.tick += 1;
+    const W = canvas.width, H = canvas.height;
+    ctx.save();
+    if (G.shake > 0) {
+      ctx.translate((Math.random() - 0.5) * G.shake * 2, (Math.random() - 0.5) * G.shake * 2);
+      G.shake *= 0.78;
+      if (G.shake < 0.4) G.shake = 0;
+    }
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Pixel dungeon floor tiles
+    ctx.fillStyle = '#181d29';
+    ctx.fillRect(0, 212, W, 58);
+    ctx.fillStyle = '#262e40';
+    ctx.fillRect(0, 212, W, 3);
+    for (let i = 0; i < W; i += 40) {
+      ctx.fillStyle = '#1f2535';
+      ctx.fillRect(i, 224, 24, 4);
+    }
+
+    // Shadows
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.fillRect(156, 206, 92, 10);
+    ctx.fillRect(562, 206, 104, 10);
+
+    // Player animation
+    const pBob = Math.round(Math.sin(G.tick * 0.08) * 3);
+    if (G.player.lunge > 0) G.player.lunge *= 0.75;
+    if (G.player.flash > 0) G.player.flash -= 1;
+    drawSprite(PLAYER_SPRITE, 152 + G.player.lunge * 4, 128 + pBob, 6, G.player.flash > 0);
+    ctx.fillStyle = '#c9d1d9';
+    ctx.font = 'bold 13px ui-monospace, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Cyh-codes', 200, 232);
+    drawHpBar(120, 240, 160, G.player.hp, G.player.maxHp, G.player.block, '#4ade80');
+
+    // Boss animation
+    if (G.boss) {
+      const bBob = Math.round(Math.sin(G.tick * 0.09 + 1.5) * 4);
+      if (G.boss.lunge < 0) G.boss.lunge *= 0.75;
+      if (G.boss.flash > 0) G.boss.flash -= 1;
+      const sprite = BOSS_SPRITES[G.boss.sprite];
+      drawSprite(sprite, 558 + G.boss.lunge * 4, 124 + bBob, 6.5, G.boss.flash > 0);
+
+      // Boss intent pill above head
+      const mv = G.boss.intent;
+      const weakPenalty = G.boss.weak > 0 ? 3 : 0;
+      let intentText = '';
+      let intentColor = '#ff5c5c';
+      if (mv.type === 'attack') {
+        intentText = `意图: 攻击 ${Math.max(0, mv.val - weakPenalty)}`;
+      } else if (mv.type === 'block') {
+        intentText = `意图: 护甲 ${mv.val} + 攻击 ${Math.max(0, mv.atk - weakPenalty)}`;
+        intentColor = '#ffd166';
+      } else {
+        intentText = `意图: 攻击 ${Math.max(0, mv.val - weakPenalty)} + 塞幻觉`;
+        intentColor = '#c084fc';
+      }
+      ctx.fillStyle = '#12151d';
+      ctx.fillRect(508, 76, 206, 24);
+      ctx.strokeStyle = intentColor;
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(508, 76, 206, 24);
+      ctx.fillStyle = intentColor;
+      ctx.font = 'bold 12px ui-monospace, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(intentText, 611, 92);
+
+      ctx.fillStyle = '#ffd166';
+      ctx.font = 'bold 13px ui-monospace, monospace';
+      ctx.fillText(G.boss.name, 612, 232);
+      drawHpBar(522, 240, 180, G.boss.hp, G.boss.maxHp, G.boss.block, '#ff5c5c');
+    }
+
+    // Floating combat numbers
+    for (let i = G.floats.length - 1; i >= 0; i--) {
+      const f = G.floats[i];
+      f.y -= 1.1;
+      f.life -= 1;
+      ctx.globalAlpha = Math.max(0, f.life / 42);
+      ctx.fillStyle = f.color;
+      ctx.font = 'bold 18px ui-monospace, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(f.text, f.x, f.y);
+      ctx.globalAlpha = 1;
+      if (f.life <= 0) G.floats.splice(i, 1);
+    }
+
+    ctx.restore();
+    requestAnimationFrame(loop);
+  }
+
+  // ===== Bindings =====
+  document.getElementById('endTurnBtn').onclick = endTurn;
+  document.getElementById('undoBtn').onclick = triggerUndo;
+  document.getElementById('restartBtn').onclick = startRun;
+  document.getElementById('sfxBtn').onclick = (e) => {
+    sfxOn = !sfxOn;
+    e.target.textContent = `音效: ${sfxOn ? '开' : '关'}`;
+  };
+  window.addEventListener('keydown', (e) => {
+    if (e.key >= '1' && e.key <= '5') playCard(Number(e.key) - 1);
+    else if (e.code === 'Space' || e.key.toLowerCase() === 'e') { e.preventDefault(); endTurn(); }
+    else if (e.key.toLowerCase() === 'u') triggerUndo();
+    else if (e.key.toLowerCase() === 'r') startRun();
+  });
+
+  startRun();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

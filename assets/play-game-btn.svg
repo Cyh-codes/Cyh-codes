@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="78" viewBox="0 0 420 78" shape-rendering="crispEdges">
+  <style>
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .hop { animation: hop 0.85s steps(2) infinite; }
+    .press { animation: press 1.2s steps(1) infinite; }
+    @keyframes hop {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    @keyframes press {
+      0%, 55% { opacity: 1; }
+      56%, 100% { opacity: 0.35; }
+    }
+  </style>
+
+  <!-- Stepped Pixel Border Frame -->
+  <rect x="6" y="2" width="408" height="74" fill="#161B22"/>
+  <rect x="2" y="6" width="416" height="66" fill="#161B22"/>
+  <!-- Top & Bottom Pixel Edges -->
+  <rect x="6" y="2" width="408" height="3" fill="#FF8C42"/>
+  <rect x="6" y="73" width="408" height="3" fill="#FF8C42"/>
+  <!-- Left & Right Pixel Edges -->
+  <rect x="2" y="6" width="3" height="66" fill="#FF8C42"/>
+  <rect x="415" y="6" width="3" height="66" fill="#FF8C42"/>
+  <!-- Corner Pixels -->
+  <rect x="5" y="5" width="3" height="3" fill="#FF8C42"/>
+  <rect x="412" y="5" width="3" height="3" fill="#FF8C42"/>
+  <rect x="5" y="70" width="3" height="3" fill="#FF8C42"/>
+  <rect x="412" y="70" width="3" height="3" fill="#FF8C42"/>
+
+  <!-- Left Hopping Pixel Slime -->
+  <g class="hop">
+    <rect x="34" y="26" width="12" height="3" fill="#222634"/>
+    <rect x="28" y="29" width="6" height="3" fill="#222634"/>
+    <rect x="34" y="29" width="12" height="3" fill="#86EFAC"/>
+    <rect x="46" y="29" width="6" height="3" fill="#222634"/>
+    <rect x="25" y="32" width="3" height="3" fill="#222634"/>
+    <rect x="28" y="32" width="6" height="3" fill="#86EFAC"/>
+    <rect x="34" y="32" width="18" height="3" fill="#4ADE80"/>
+    <rect x="52" y="32" width="3" height="3" fill="#222634"/>
+    <rect x="22" y="35" width="3" height="3" fill="#222634"/>
+    <rect x="25" y="35" width="3" height="3" fill="#86EFAC"/>
+    <rect x="28" y="35" width="27" height="3" fill="#4ADE80"/>
+    <rect x="55" y="35" width="3" height="3" fill="#222634"/>
+    <rect x="22" y="38" width="3" height="3" fill="#222634"/>
+    <rect x="25" y="38" width="6" height="3" fill="#4ADE80"/>
+    <rect x="31" y="38" width="3" height="3" fill="#222634"/>
+    <rect x="34" y="38" width="3" height="3" fill="#111827"/>
+    <rect x="37" y="38" width="6" height="3" fill="#4ADE80"/>
+    <rect x="43" y="38" width="3" height="3" fill="#222634"/>
+    <rect x="46" y="38" width="3" height="3" fill="#111827"/>
+    <rect x="49" y="38" width="6" height="3" fill="#4ADE80"/>
+    <rect x="55" y="38" width="3" height="3" fill="#222634"/>
+    <rect x="22" y="41" width="3" height="3" fill="#222634"/>
+    <rect x="25" y="41" width="30" height="3" fill="#4ADE80"/>
+    <rect x="55" y="41" width="3" height="3" fill="#222634"/>
+    <rect x="22" y="44" width="3" height="3" fill="#222634"/>
+    <rect x="25" y="44" width="6" height="3" fill="#16A34A"/>
+    <rect x="31" y="44" width="18" height="3" fill="#4ADE80"/>
+    <rect x="49" y="44" width="6" height="3" fill="#16A34A"/>
+    <rect x="55" y="44" width="3" height="3" fill="#222634"/>
+    <rect x="25" y="47" width="3" height="3" fill="#222634"/>
+    <rect x="28" y="47" width="24" height="3" fill="#16A34A"/>
+    <rect x="52" y="47" width="3" height="3" fill="#222634"/>
+    <rect x="28" y="50" width="24" height="3" fill="#222634"/>
+  </g>
+
+  <!-- Pixel Sword & Heart -->
+  <g>
+    <rect x="70" y="22" width="4" height="2" fill="#FF6B6B"/>
+    <rect x="76" y="22" width="4" height="2" fill="#FF6B6B"/>
+    <rect x="68" y="24" width="14" height="2" fill="#FF6B6B"/>
+    <rect x="68" y="26" width="14" height="2" fill="#FF6B6B"/>
+    <rect x="70" y="28" width="10" height="2" fill="#FF6B6B"/>
+    <rect x="72" y="30" width="6" height="2" fill="#FF6B6B"/>
+    <rect x="74" y="32" width="2" height="2" fill="#FF6B6B"/>
+  </g>
+
+  <!-- Title & Prompt -->
+  <text x="90" y="34" fill="#FFFFFF" font-size="16" font-weight="700" class="mono">SLAY THE BUG</text>
+  <text x="224" y="34" fill="#8B949E" font-size="12" class="sans">像素爬塔卡牌小游戏</text>
+
+  <text x="90" y="56" fill="#FFD166" font-size="12" font-weight="700" class="mono press">▶ PRESS START TO PLAY</text>
+  <text x="266" y="56" fill="#8B949E" font-size="11" class="mono">5 FLOORS · WEB</text>
+</svg>

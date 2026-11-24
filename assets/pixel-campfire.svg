@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="62" viewBox="0 0 480 62" shape-rendering="crispEdges">
+  <style>
+    .flame { animation: flame 0.55s steps(2) infinite; transform-origin: 240px 44px; }
+    .ember1 { animation: ember 1.5s linear infinite; }
+    .ember2 { animation: ember 1.9s linear infinite 0.6s; }
+    .floaty { animation: floaty 1.8s ease-in-out infinite; }
+    @keyframes flame { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.12); } }
+    @keyframes ember { 0% { transform: translateY(0px); opacity: 0.9; } 100% { transform: translateY(-18px); opacity: 0; } }
+    @keyframes floaty { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } }
+  </style>
+
+  <rect x="28" y="54" width="424" height="3" fill="#8B949E" fill-opacity="0.25"/>
+
+  <!-- Left: Blue Mana Potion -->
+  <g class="floaty">
+    <rect x="56" y="26" width="12" height="4" fill="#222634"/>
+    <rect x="56" y="30" width="4" height="4" fill="#222634"/>
+    <rect x="60" y="30" width="4" height="4" fill="#8D5524"/>
+    <rect x="64" y="30" width="4" height="4" fill="#222634"/>
+    <rect x="56" y="34" width="4" height="4" fill="#222634"/>
+    <rect x="60" y="34" width="4" height="4" fill="#94A3B8"/>
+    <rect x="64" y="34" width="4" height="4" fill="#222634"/>
+    <rect x="52" y="38" width="4" height="4" fill="#222634"/>
+    <rect x="56" y="38" width="12" height="4" fill="#58A6FF"/>
+    <rect x="68" y="38" width="4" height="4" fill="#222634"/>
+    <rect x="48" y="42" width="4" height="4" fill="#222634"/>
+    <rect x="52" y="42" width="8" height="4" fill="#58A6FF"/>
+    <rect x="60" y="42" width="4" height="4" fill="#93C5FD"/>
+    <rect x="64" y="42" width="8" height="4" fill="#58A6FF"/>
+    <rect x="72" y="42" width="4" height="4" fill="#222634"/>
+    <rect x="48" y="46" width="4" height="4" fill="#222634"/>
+    <rect x="52" y="46" width="20" height="4" fill="#58A6FF"/>
+    <rect x="72" y="46" width="4" height="4" fill="#222634"/>
+    <rect x="52" y="50" width="20" height="4" fill="#222634"/>
+  </g>
+
+  <!-- Mid-Left: Smithing Anvil -->
+  <g>
+    <rect x="128" y="30" width="44" height="4" fill="#222634"/>
+    <rect x="128" y="34" width="4" height="4" fill="#222634"/>
+    <rect x="132" y="34" width="36" height="4" fill="#3B4252"/>
+    <rect x="168" y="34" width="4" height="4" fill="#222634"/>
+    <rect x="132" y="38" width="8" height="4" fill="#222634"/>
+    <rect x="140" y="38" width="20" height="4" fill="#3B4252"/>
+    <rect x="160" y="38" width="8" height="4" fill="#222634"/>
+    <rect x="140" y="42" width="4" height="4" fill="#222634"/>
+    <rect x="144" y="42" width="12" height="4" fill="#3B4252"/>
+    <rect x="156" y="42" width="4" height="4" fill="#222634"/>
+    <rect x="136" y="46" width="4" height="4" fill="#222634"/>
+    <rect x="140" y="46" width="20" height="4" fill="#3B4252"/>
+    <rect x="160" y="46" width="4" height="4" fill="#222634"/>
+    <rect x="132" y="50" width="36" height="4" fill="#222634"/>
+  </g>
+
+  <!-- Center: Spire Rest Campfire -->
+  <g>
+    <rect class="ember1" x="234" y="18" width="3" height="3" fill="#FFD166"/>
+    <rect class="ember2" x="246" y="16" width="3" height="3" fill="#FF8C42"/>
+    <g class="flame">
+      <rect x="236" y="18" width="4" height="4" fill="#FF8C42"/>
+    <rect x="232" y="22" width="4" height="4" fill="#FF8C42"/>
+    <rect x="236" y="22" width="4" height="4" fill="#EF4444"/>
+    <rect x="240" y="22" width="4" height="4" fill="#FF8C42"/>
+    <rect x="228" y="26" width="4" height="4" fill="#FF8C42"/>
+    <rect x="232" y="26" width="4" height="4" fill="#EF4444"/>
+    <rect x="236" y="26" width="4" height="4" fill="#FFD166"/>
+    <rect x="240" y="26" width="4" height="4" fill="#EF4444"/>
+    <rect x="244" y="26" width="4" height="4" fill="#FF8C42"/>
+    <rect x="224" y="30" width="4" height="4" fill="#FF8C42"/>
+    <rect x="228" y="30" width="8" height="4" fill="#FFD166"/>
+    <rect x="236" y="30" width="4" height="4" fill="#EF4444"/>
+    <rect x="240" y="30" width="8" height="4" fill="#FFD166"/>
+    <rect x="248" y="30" width="4" height="4" fill="#FF8C42"/>
+    <rect x="224" y="34" width="4" height="4" fill="#FF8C42"/>
+    <rect x="228" y="34" width="20" height="4" fill="#FFD166"/>
+    <rect x="248" y="34" width="4" height="4" fill="#FF8C42"/>
+    <rect x="228" y="38" width="4" height="4" fill="#FF8C42"/>
+    <rect x="232" y="38" width="12" height="4" fill="#FFD166"/>
+    <rect x="244" y="38" width="4" height="4" fill="#FF8C42"/>
+    <rect x="220" y="42" width="8" height="4" fill="#8D5524"/>
+    <rect x="228" y="42" width="20" height="4" fill="#222634"/>
+    <rect x="248" y="42" width="8" height="4" fill="#8D5524"/>
+    <rect x="216" y="46" width="4" height="4" fill="#222634"/>
+    <rect x="220" y="46" width="8" height="4" fill="#5C4033"/>
+    <rect x="228" y="46" width="8" height="4" fill="#8D5524"/>
+    <rect x="236" y="46" width="4" height="4" fill="#222634"/>
+    <rect x="240" y="46" width="8" height="4" fill="#8D5524"/>
+    <rect x="248" y="46" width="8" height="4" fill="#5C4033"/>
+    <rect x="256" y="46" width="4" height="4" fill="#222634"/>
+    <rect x="220" y="50" width="12" height="4" fill="#222634"/>
+    <rect x="244" y="50" width="12" height="4" fill="#222634"/>
+    </g>
+  </g>
+
+  <!-- Mid-Right: Pixel Heart & Coin -->
+  <g class="floaty">
+    <rect x="314" y="34" width="4" height="4" fill="#FF6B6B"/>
+    <rect x="322" y="34" width="4" height="4" fill="#FF6B6B"/>
+    <rect x="310" y="38" width="20" height="4" fill="#FF6B6B"/>
+    <rect x="314" y="42" width="12" height="4" fill="#FF6B6B"/>
+    <rect x="318" y="46" width="4" height="4" fill="#FF6B6B"/>
+  </g>
+
+  <!-- Right: Relic Chest -->
+  <g>
+    <rect x="388" y="26" width="36" height="4" fill="#222634"/>
+    <rect x="384" y="30" width="4" height="4" fill="#222634"/>
+    <rect x="388" y="30" width="16" height="4" fill="#8D5524"/>
+    <rect x="404" y="30" width="4" height="4" fill="#FFD166"/>
+    <rect x="408" y="30" width="16" height="4" fill="#8D5524"/>
+    <rect x="424" y="30" width="4" height="4" fill="#222634"/>
+    <rect x="384" y="34" width="4" height="4" fill="#222634"/>
+    <rect x="388" y="34" width="16" height="4" fill="#8D5524"/>
+    <rect x="404" y="34" width="4" height="4" fill="#FFD166"/>
+    <rect x="408" y="34" width="16" height="4" fill="#8D5524"/>
+    <rect x="424" y="34" width="4" height="4" fill="#222634"/>
+    <rect x="384" y="38" width="20" height="4" fill="#222634"/>
+    <rect x="404" y="38" width="8" height="4" fill="#FFD166"/>
+    <rect x="412" y="38" width="16" height="4" fill="#222634"/>
+    <rect x="384" y="42" width="4" height="4" fill="#222634"/>
+    <rect x="388" y="42" width="16" height="4" fill="#5C4033"/>
+    <rect x="404" y="42" width="4" height="4" fill="#FFD166"/>
+    <rect x="408" y="42" width="16" height="4" fill="#5C4033"/>
+    <rect x="424" y="42" width="4" height="4" fill="#222634"/>
+    <rect x="384" y="46" width="4" height="4" fill="#222634"/>
+    <rect x="388" y="46" width="36" height="4" fill="#5C4033"/>
+    <rect x="424" y="46" width="4" height="4" fill="#222634"/>
+    <rect x="388" y="50" width="36" height="4" fill="#222634"/>
+  </g>
+</svg>

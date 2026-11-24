@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="340" height="48" viewBox="0 0 340 48" shape-rendering="crispEdges">
+  <style>
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .zzz { animation: zzz 2s ease-in-out infinite; }
+    .star1 { animation: star 1.5s steps(2) infinite; }
+    .star2 { animation: star 2.1s steps(2) infinite 0.5s; }
+    @keyframes zzz { 0% { transform: translateY(2px); opacity: 0.2; } 50% { transform: translateY(-4px); opacity: 1; } 100% { transform: translateY(-8px); opacity: 0.1; } }
+    @keyframes star { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+  </style>
+
+  <!-- Twinkling pixel stars -->
+  <rect class="star1" x="36" y="16" width="4" height="4" fill="#FFD166"/>
+  <rect class="star2" x="84" y="28" width="3" height="3" fill="#58A6FF"/>
+  <rect class="star1" x="256" y="26" width="3" height="3" fill="#C084FC"/>
+  <rect class="star2" x="296" y="14" width="4" height="4" fill="#FFD166"/>
+
+  <!-- Sleeping Cat in center -->
+  <g>
+    <rect x="148" y="20" width="4" height="4" fill="#222634"/>
+    <rect x="164" y="20" width="4" height="4" fill="#222634"/>
+    <rect x="144" y="24" width="4" height="4" fill="#222634"/>
+    <rect x="148" y="24" width="4" height="4" fill="#F3F4F6"/>
+    <rect x="152" y="24" width="12" height="4" fill="#222634"/>
+    <rect x="164" y="24" width="4" height="4" fill="#F3F4F6"/>
+    <rect x="168" y="24" width="4" height="4" fill="#222634"/>
+    <rect x="140" y="28" width="4" height="4" fill="#222634"/>
+    <rect x="144" y="28" width="24" height="4" fill="#F3F4F6"/>
+    <rect x="168" y="28" width="12" height="4" fill="#222634"/>
+    <rect x="136" y="32" width="4" height="4" fill="#222634"/>
+    <rect x="140" y="32" width="8" height="4" fill="#F3F4F6"/>
+    <rect x="148" y="32" width="4" height="4" fill="#222634"/>
+    <rect x="152" y="32" width="8" height="4" fill="#F3F4F6"/>
+    <rect x="160" y="32" width="4" height="4" fill="#222634"/>
+    <rect x="164" y="32" width="16" height="4" fill="#F3F4F6"/>
+    <rect x="180" y="32" width="4" height="4" fill="#222634"/>
+    <rect x="136" y="36" width="4" height="4" fill="#222634"/>
+    <rect x="140" y="36" width="44" height="4" fill="#F3F4F6"/>
+    <rect x="184" y="36" width="4" height="4" fill="#222634"/>
+    <rect x="140" y="40" width="44" height="4" fill="#222634"/>
+    <text class="mono zzz" x="198" y="20" fill="#8B949E" font-size="11" font-weight="700">z Z z</text>
+  </g>
+
+  <!-- Crescent Pixel Moon -->
+  <g>
+    <rect x="274" y="10" width="9" height="3" fill="#FFD166"/>
+    <rect x="271" y="13" width="6" height="3" fill="#FFD166"/>
+    <rect x="268" y="16" width="6" height="3" fill="#FFD166"/>
+    <rect x="268" y="19" width="6" height="3" fill="#FFD166"/>
+    <rect x="271" y="22" width="6" height="3" fill="#FFD166"/>
+    <rect x="274" y="25" width="9" height="3" fill="#FFD166"/>
+  </g>
+</svg>
