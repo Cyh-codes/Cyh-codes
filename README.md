@@ -10,13 +10,20 @@
 
 <div align="center">
   <h3>真实的开发日常 · My Reality</h3>
-  <p>作为一个底层逻辑的“盲目”信徒，我深信：<b>“只要终端环境配得足够花哨，别人就不会发现我还在 Google 翻转二叉树。”</b><br/>目前正致力于将散发着腐烂气息的“上帝类 (God Class)”送进历史垃圾堆，顺手折腾离线 7B 桌面助手 <code>local_agent</code> 和 <code>cyh.codes</code> 云端工作区。</p>
-</div>
-
-<div align="center">
-  <p><b>目前正在死磕：</b>手动管理内存（并专业地制造内存泄漏），以及强迫症般地推崇 3NF / BCNF 数据库规范化。</p>
-  <p><b>Vibe Coding 践行者：</b>5 分钟指挥 AI 写出脚手架，再花一整天修它的架构幻觉——直到干脆给它焊了沙箱和一键 Undo。</p>
-  <p><b>工程底线：</b>拒绝一个 <code>switch</code> 塞一万行逻辑！代码可以跑得慢，但绝对不能不符合设计模式规范。</p>
+  <p>
+    底层逻辑的“盲目”信徒，坚信一件事：<br/>
+    <b>“只要终端环境配得足够花哨，就没人发现我还在 Google 翻转二叉树。”</b>
+  </p>
+  <p>
+    致力于把「上帝类 (God Class)」送进历史垃圾堆，<br/>
+    顺手折腾离线 7B 助手 <code>local_agent</code> 和 <code>cyh.codes</code> 云端工作区。
+  </p>
+  <br/>
+  <p>
+    <b>日常死磕：</b>手动管理内存（专业制造内存泄漏）与 3NF / BCNF 范式强迫症<br/>
+    <b>Vibe Coding：</b>5 分钟指挥 AI 写脚手架，一整天修它的架构幻觉与沙箱护栏<br/>
+    <b>工程底线：</b>拒绝万行 <code>switch</code>，代码可以跑得慢，但绝对不能脏
+  </p>
 </div>
 
 <br/>
